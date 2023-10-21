@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LeadTracker.API;
 using LeadTracker.Core.DTO;
 using LeadTracker.Core.Entities;
 using System;
@@ -13,13 +14,17 @@ namespace LeadTracker.Core.Extension
     {
         public MappingProfile()
         {
+            //CreateMap<LoginDTO, Employee>().ReverseMap();
+
             CreateMap<OrganisationDTO, Organisation>().ReverseMap();
 
-            CreateMap<DTO.AddressDTO, Entities.Address>().ReverseMap();
+            CreateMap<AddressDTO, Address>().ReverseMap();
 
-            CreateMap<DTO.BranchDTO, Entities.Branch>().ReverseMap();
+            CreateMap<BranchDTO, Branch>().ReverseMap();
 
             CreateMap<CodeDTO, Code>().ReverseMap();
+
+            CreateMap<DocumentDTO, Document>().ReverseMap();    
 
             CreateMap<EmployeeDTO, Employee>().ReverseMap();
 
@@ -28,6 +33,31 @@ namespace LeadTracker.Core.Extension
             CreateMap<RolePermissionDTO, RolePermission>().ReverseMap();
 
             CreateMap<RoleDTO, Role>().ReverseMap();
+
+            CreateMap<BookingDTO, Booking>().ReverseMap();
+
+            CreateMap<LeadDTO, Lead>().ReverseMap();
+
+            CreateMap<LocationDTO, Location>().ReverseMap();
+
+            CreateMap<ProjectDTO, Project>().ReverseMap();
+
+            CreateMap<ProjectDetailDTO, ProjectDetail>().ReverseMap();
+
+            CreateMap<TrackerDTO, Tracker>().ReverseMap();
+
+            CreateMap<UserLocationDTO, UserLocation>().ReverseMap();    
+
+            CreateMap<ZoneDTO, Zone>().ReverseMap();
+
+            CreateMap<WorkFlowDTO, WorkFlow>().ReverseMap();
+
+            //CreateMap<WorkFlowStepDTO, WorkFlowStep>().ForMember(src => src.Id, opts => opts.MapFrom(dest => dest.WorkFlowStepId)).ReverseMap();
+
+            CreateMap<WorkFlowStepDTO, WorkFlowStep>().ReverseMap();
+
+
+
         }
 
     }

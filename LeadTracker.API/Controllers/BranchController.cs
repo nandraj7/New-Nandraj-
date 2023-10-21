@@ -4,8 +4,10 @@ using LeadTracker.Core.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace LeadTracker.API.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class BranchController : BaseController
@@ -56,7 +58,7 @@ namespace LeadTracker.API.Controllers
                 return BadRequest();
             }
 
-            await _branchService.UpdateBranchAsync(branch).ConfigureAwait(false);
+            await _branchService.UpdateBranchAsync(id, branch).ConfigureAwait(false);
             return NoContent();
         }
 

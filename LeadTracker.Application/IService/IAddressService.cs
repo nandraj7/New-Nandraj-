@@ -1,4 +1,5 @@
-﻿using LeadTracker.Core.DTO;
+﻿using LeadTracker.API;
+using LeadTracker.Core.DTO;
 using LeadTracker.Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,11 @@ namespace LeadTracker.BusinessLayer.IService
     {
         Task CreateAddress(AddressDTO address);
 
-        Task<Address> GetAddressByIdAsync(int id);
+        Task<AddressDTO> GetAddressByIdAsync(int id);
 
-        Task<IEnumerable<Address>> GetAllAddressAsync();
+        Task<IEnumerable<AddressDTO>> GetAllAddressAsync();
 
-        Task UpdateAddressAsync(AddressDTO address);
+        Task UpdateAddressAsync(int id, AddressDTO address);
 
         Task DeleteAddressAsync(int id);
     }

@@ -1,4 +1,5 @@
-﻿using LeadTracker.Core.DTO;
+﻿using LeadTracker.API;
+using LeadTracker.Core.DTO;
 using LeadTracker.Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,11 @@ namespace LeadTracker.BusinessLayer.IService
     {
         Task CreateCode(CodeDTO code);
 
-        Task<Code> GetCodeByIdAsync(int id);
+        Task<CodeDTO> GetCodeByIdAsync(int id);
 
-        Task<IEnumerable<Code>> GetAllCodeAsync();
+        Task<IEnumerable<CodeDTO>> GetAllCodeAsync();
 
-        Task UpdateCodeAsync(CodeDTO code);
+        Task UpdateCodeAsync(int id, CodeDTO code);
 
         Task DeleteCodeAsync(int id);
     }

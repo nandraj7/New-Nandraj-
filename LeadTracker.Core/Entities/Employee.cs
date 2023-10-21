@@ -1,10 +1,13 @@
-﻿using System;
+﻿using LeadTracker.Core.Entities;
+using System;
 using System.Collections.Generic;
 
-namespace LeadTracker.Core.Entities;
+namespace LeadTracker.API;
+
 
 public partial class Employee : Identity
 {
+
 
     public string? Name { get; set; }
 
@@ -20,38 +23,22 @@ public partial class Employee : Identity
 
     public int? ParentUserId { get; set; }
 
-  
+   
 
     public int? OrgId { get; set; }
 
-   
-    public virtual ICollection<Address> AddressCreatedByNavigations { get; set; } = new List<Address>();
+    public string? Gender { get; set; }
 
-    public virtual ICollection<Address> AddressModifiedByNavigations { get; set; } = new List<Address>();
+    public int? RoleId { get; set; }
 
-    public virtual ICollection<Branch> BranchCreatedByNavigations { get; set; } = new List<Branch>();
+    public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
 
-    public virtual ICollection<Branch> BranchModifiedByNavigations { get; set; } = new List<Branch>();
-
-    public virtual ICollection<Code> CodeCreatedByNavigations { get; set; } = new List<Code>();
-
-    public virtual ICollection<Code> CodeModifiedByNavigations { get; set; } = new List<Code>();
+    public virtual ICollection<Lead> Leads { get; set; } = new List<Lead>();
 
     public virtual Organisation? Org { get; set; }
 
-    public virtual ICollection<Organisation> OrganisationCreatedByNavigations { get; set; } = new List<Organisation>();
+    public virtual Role? Role { get; set; }
 
-    public virtual ICollection<Organisation> OrganisationModifiedByNavigations { get; set; } = new List<Organisation>();
-
-    public virtual ICollection<Permission> PermissionCreatedByNavigations { get; set; } = new List<Permission>();
-
-    public virtual ICollection<Permission> PermissionModifiedByNavigations { get; set; } = new List<Permission>();
-
-    public virtual ICollection<Role> RoleCreatedByNavigations { get; set; } = new List<Role>();
-
-    public virtual ICollection<Role> RoleModifiedByNavigations { get; set; } = new List<Role>();
-
-    public virtual ICollection<RolePermission> RolePermissionCreatedByNavigations { get; set; } = new List<RolePermission>();
-
-    public virtual ICollection<RolePermission> RolePermissionModifiedByNavigations { get; set; } = new List<RolePermission>();
+    public virtual ICollection<UserLocation> UserLocations { get; set; } = new List<UserLocation>();
 }
+

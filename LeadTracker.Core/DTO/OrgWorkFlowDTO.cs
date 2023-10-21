@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace LeadTracker.Core.DTO
+{
+    public class OrgWorkFlowDTO
+    {
+        public WorkFlowDTO WorkFlow { get; set; }
+
+        public List<WorkFlowStepDTO> WorkFlowStepDTO { get; set; }
+    }
+}

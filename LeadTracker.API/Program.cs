@@ -1,4 +1,5 @@
 using AutoMapper;
+using LeadTracker.API;
 using LeadTracker.API.Extensions;
 using LeadTracker.Application.IService;
 using LeadTracker.Application.Service;
@@ -7,8 +8,17 @@ using LeadTracker.BusinessLayer.Service;
 using LeadTracker.Core.DTO;
 using LeadTracker.Core.Extension;
 using LeadTracker.Infrastructure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Connections;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.CodeDom;
+using System.Configuration;
+using System.Text;
+
+
 
 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
@@ -16,28 +26,102 @@ var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
 var builder = WebApplication.CreateBuilder(args);
 
+var configuration = BuildConfiguration();
+
+builder.Configuration.Bind(configuration);
+
+var _appSetting = new AppSetting();
+
 // Add services to the container.
+
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = false,
+        ValidateIssuerSigningKey = true,
+        ValidAudience = configuration["Jwt:Audience"],
+        ValidIssuer = configuration["Jwt:Issuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+    };
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen( c =>
+{
+    // ...
+
+    // Add a security definition for JWT
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter a valid token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "Bearer"
+    });
+
+
+    //Add a global security requirement for JWT
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+   {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] { }
+        }
+   });
+}
+);
+
+
 
 #region DBContext
 var connectionOptions = new ConnectionOptions();
 
-builder.Configuration.GetSection("ConnectionOptions").Bind(connectionOptions);
+builder.Configuration.GetSection("ConnectionOptions").Bind(_appSetting);
 
-builder.Services.AddDbContext<LeadTrackerContext>(options => options.UseSqlServer(connectionOptions.DbConnection));
+builder.Services.AddDbContext<LeadTrackerContext>(options => options.UseSqlServer(_appSetting.DbConnection));
 #endregion
+
+
 
 #region Mapper, Repositories and Services
 
-builder.Services.AddAutoMapper(typeof(MappingProfile),typeof(MappingProfile));
-
+builder.Services.AddAutoMapper(typeof(MappingProfile), typeof(MappingProfile));
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 #endregion
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
@@ -47,18 +131,21 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+//app.UseMiddleware<JwtMiddleware>();
+app.UseCors("AllowSpecificOrigin");
 app.UseHttpsRedirection();
+app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
 
-//IConfiguration GetConfiguration()
-//{
-//    builder.Configuration
-//    .Add("MyIniConfig.ini", optional: true, reloadOnChange: true)
-//    .add($"MyIniConfig.{builder.Environment.EnvironmentName}.ini",
-//                optional: true, reloadOnChange: true);
+IConfiguration BuildConfiguration()
+{
+    var configurationBuilder = new ConfigurationBuilder()
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .AddJsonFile($"appsettings.{environment}.json", optional: false, reloadOnChange: true);
 
-
-//}
+    return configurationBuilder.Build();
+}

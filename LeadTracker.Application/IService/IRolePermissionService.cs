@@ -1,4 +1,5 @@
-﻿using LeadTracker.Core.DTO;
+﻿using LeadTracker.API;
+using LeadTracker.Core.DTO;
 using LeadTracker.Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,11 @@ namespace LeadTracker.BusinessLayer.IService
     {
         Task CreateRolePermission(RolePermissionDTO rolePermisson);
 
-        Task<RolePermission> GetRolePermissionByIdAsync(int id);
+        Task<RolePermissionDTO> GetRolePermissionByIdAsync(int id);
 
-        Task<IEnumerable<RolePermission>> GetAllRolePermissionAsync();
+        Task<IEnumerable<RolePermissionDTO>> GetAllRolePermissionAsync();
 
-        Task UpdateRolePermissionAsync(RolePermissionDTO rolePermission);
+        Task UpdateRolePermissionAsync(int id, RolePermissionDTO rolePermission);
 
         Task DeleteRolePermissionAsync(int id);
     }

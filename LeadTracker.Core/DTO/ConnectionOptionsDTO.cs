@@ -6,8 +6,16 @@ using System.Threading.Tasks;
 
 namespace LeadTracker.Core.DTO
 {
-    public class ConnectionOptions
+    public class AppSetting
     {
         public string DbConnection { get; set; }
+
+        public JWT JWT { get; set; }
+    }
+    public class JWT
+    {
+        public string ValidAudience { get; set; }
+        public string ValidIssuer { get; set; }
+        public string SecretKey { get; set; }
     }
 }

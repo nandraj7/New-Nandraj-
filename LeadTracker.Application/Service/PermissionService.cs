@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LeadTracker.API;
 using LeadTracker.BusinessLayer.IService;
 using LeadTracker.Core.DTO;
 using LeadTracker.Core.Entities;
@@ -7,6 +8,7 @@ using LeadTracker.Infrastructure.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,21 +34,34 @@ namespace LeadTracker.BusinessLayer.Service
             await _permissionrepository.CreateAsync(permsn).ConfigureAwait(false);
         }
 
-        public async Task<Permission> GetPermissionByIdAsync(int id)
+        public async Task<PermissionDTO> GetPermissionByIdAsync(int id)
         {
-            return await _permissionrepository.GetByIdAsync(id);
+            var permission = await _permissionrepository.GetByIdAsync(id);
+
+            var permissionDTO = _mappingProfile.Map<PermissionDTO>(permission);
+            return permissionDTO;
         }
 
-        public async Task<IEnumerable<Permission>> GetAllPermissionAsync()
+        public async Task<IEnumerable<PermissionDTO>> GetAllPermissionAsync()
         {
             var permissions = await _permissionrepository.GetAllAsync();
-            return permissions.ToList();
+
+            var permissionsDTO = _mappingProfile.Map<List<PermissionDTO>>(permissions);
+            return permissionsDTO.ToList();
         }
 
-        public async Task UpdatePermissionAsync(PermissionDTO permission)
+        public async Task UpdatePermissionAsync(int id, PermissionDTO permission)
         {
-            var permsn = _mappingProfile.Map<Permission>(permission);
-            await _permissionrepository.UpdateAsync(permsn);
+            var existingPermission = await _permissionrepository.GetByIdAsync(id);
+
+
+            _mappingProfile.Map(permission, existingPermission);
+
+
+            await _permissionrepository.UpdateAsync(existingPermission);
+
+            //var permsn = _mappingProfile.Map<Permission>(permission);
+            //await _permissionrepository.UpdateAsync(permsn);
         }
 
         public async Task DeletePermissionAsync(int id)

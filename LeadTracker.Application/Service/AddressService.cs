@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
+using LeadTracker.API;
 using LeadTracker.BusinessLayer.IService;
 using LeadTracker.Core.DTO;
 using LeadTracker.Core.Entities;
 using LeadTracker.Infrastructure;
 using LeadTracker.Infrastructure.IRepository;
+using LeadTracker.Infrastructure.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,21 +33,38 @@ namespace LeadTracker.BusinessLayer.Service
             await _addressrepository.CreateAsync(adr).ConfigureAwait(false);
         }
 
-        public async Task<Address> GetAddressByIdAsync(int id)
+        public async Task<AddressDTO> GetAddressByIdAsync(int id)
         {
-            return await _addressrepository.GetByIdAsync(id);
+            var address = await _addressrepository.GetByIdAsync(id);
+
+            var addressDTO = _mappingProfile.Map<AddressDTO>(address);
+            return addressDTO;
         }
 
-        public async Task<IEnumerable<Address>> GetAllAddressAsync()
+
+        public async Task<IEnumerable<AddressDTO>> GetAllAddressAsync()
         {
             var addresses = await _addressrepository.GetAllAsync();
-            return addresses.ToList();
+
+            var addressDTOs = _mappingProfile.Map<List<AddressDTO>>(addresses);
+
+            return addressDTOs.ToList();
         }
 
-        public async Task UpdateAddressAsync(AddressDTO address)
+        public async Task UpdateAddressAsync(int id, AddressDTO address)
         {
-            var adr = _mappingProfile.Map<Address>(address);
-            await _addressrepository.UpdateAsync(adr);
+            var existingAddress = await _addressrepository.GetByIdAsync(id);
+
+
+            _mappingProfile.Map(address, existingAddress);
+
+
+            await _addressrepository.UpdateAsync(existingAddress);
+
+
+            //var adr = _mappingProfile.Map<Address>(address);
+            //await _addressrepository.UpdateAsync(adr);
+
         }
 
         public async Task DeleteAddressAsync(int id)

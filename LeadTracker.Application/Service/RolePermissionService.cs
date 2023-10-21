@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LeadTracker.API;
 using LeadTracker.BusinessLayer.IService;
 using LeadTracker.Core.DTO;
 using LeadTracker.Core.Entities;
@@ -7,6 +8,7 @@ using LeadTracker.Infrastructure.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,21 +32,34 @@ namespace LeadTracker.BusinessLayer.Service
             await _rolepermissionrepository.CreateAsync(rolePerm).ConfigureAwait(false);
         }
 
-        public async Task<RolePermission> GetRolePermissionByIdAsync(int id)
+        public async Task<RolePermissionDTO> GetRolePermissionByIdAsync(int id)
         {
-            return await _rolepermissionrepository.GetByIdAsync(id);
+            var rolePermission = await _rolepermissionrepository.GetByIdAsync(id);
+
+            var rolePermissionDTO = _mappingProfile.Map<RolePermissionDTO>(rolePermission);
+            return rolePermissionDTO;
         }
 
-        public async Task<IEnumerable<RolePermission>> GetAllRolePermissionAsync()
+        public async Task<IEnumerable<RolePermissionDTO>> GetAllRolePermissionAsync()
         {
-            var rolesPermission = await _rolepermissionrepository.GetAllAsync();
-            return rolesPermission.ToList();
+            var rolesPermissions = await _rolepermissionrepository.GetAllAsync();
+
+            var rolesPermissionsDTO = _mappingProfile.Map<List<RolePermissionDTO>>(rolesPermissions);
+            return rolesPermissionsDTO.ToList();
         }
 
-        public async Task UpdateRolePermissionAsync(RolePermissionDTO rolePermission)
+        public async Task UpdateRolePermissionAsync(int id, RolePermissionDTO rolePermission)
         {
-            var empl = _mappingProfile.Map<RolePermission>(rolePermission);
-            await _rolepermissionrepository.UpdateAsync(empl);
+            var existingRolePermission = await _rolepermissionrepository.GetByIdAsync(id);
+
+
+            _mappingProfile.Map(rolePermission, existingRolePermission);
+
+
+            await _rolepermissionrepository.UpdateAsync(existingRolePermission);
+
+            //var empl = _mappingProfile.Map<RolePermission>(rolePermission);
+            //await _rolepermissionrepository.UpdateAsync(empl);
         }
 
         public async Task DeleteRolePermissionAsync(int id)

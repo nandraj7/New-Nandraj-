@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LeadTracker.API;
 using LeadTracker.BusinessLayer.IService;
 using LeadTracker.Core.DTO;
 using LeadTracker.Core.Entities;
@@ -7,6 +8,7 @@ using LeadTracker.Infrastructure.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,21 +32,34 @@ namespace LeadTracker.BusinessLayer.Service
             await _branchrepository.CreateAsync(brnch).ConfigureAwait(false);
         }
 
-        public async Task<Branch> GetBranchByIdAsync(int id)
+        public async Task<BranchDTO> GetBranchByIdAsync(int id)
         {
-            return await _branchrepository.GetByIdAsync(id);
+            var branch =  await _branchrepository.GetByIdAsync(id);
+
+            var branchDTO = _mappingProfile.Map<BranchDTO>(branch);
+
+            return branchDTO;
         }
 
-        public async Task<IEnumerable<Branch>> GetAllBranchAsync()
+        public async Task<IEnumerable<BranchDTO>> GetAllBranchAsync()
         {
             var branches = await _branchrepository.GetAllAsync();
-            return branches.ToList();
+            var branchesDTO = _mappingProfile.Map<List<BranchDTO>>(branches);
+            return branchesDTO.ToList();
         }
 
-        public async Task UpdateBranchAsync(BranchDTO branch)
+        public async Task UpdateBranchAsync(int id, BranchDTO branch)
         {
-            var brn = _mappingProfile.Map<Branch>(branch);
-            await _branchrepository.UpdateAsync(brn);
+            var existingBranch = await _branchrepository.GetByIdAsync(id);
+
+
+            _mappingProfile.Map(branch, existingBranch);
+
+
+            await _branchrepository.UpdateAsync(existingBranch);
+
+            //var brn = _mappingProfile.Map<Branch>(branch);
+            //await _branchrepository.UpdateAsync(brn);
         }
 
         public async Task DeleteBranchAsync(int id)

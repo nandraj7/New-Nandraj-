@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+using LeadTracker.Core.DTO;
 using LeadTracker.Core.Entities;
+using Microsoft.EntityFrameworkCore;
 
-
-namespace LeadTracker.Infrastructure;
+namespace LeadTracker.API;
 
 public partial class LeadTrackerContext : DbContext
 {
@@ -19,25 +19,51 @@ public partial class LeadTrackerContext : DbContext
 
     public virtual DbSet<Address> Addresses { get; set; }
 
+    public virtual DbSet<Booking> Bookings { get; set; }
+
     public virtual DbSet<Branch> Branches { get; set; }
 
     public virtual DbSet<Code> Codes { get; set; }
+
+    public virtual DbSet<Document> Documents { get; set; }
 
     public virtual DbSet<Employee> Employees { get; set; }
 
     public virtual DbSet<EmployeeRole> EmployeeRoles { get; set; }
 
+    public virtual DbSet<Lead> Leads { get; set; }
+
+    public virtual DbSet<LeadSource> LeadSources { get; set; }
+
+    public virtual DbSet<Location> Locations { get; set; }
+
     public virtual DbSet<Organisation> Organisations { get; set; }
 
     public virtual DbSet<Permission> Permissions { get; set; }
+
+    public virtual DbSet<Project> Projects { get; set; }
+
+    public virtual DbSet<ProjectDetail> ProjectDetails { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<RolePermission> RolePermissions { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS01;Database=LeadTracker;Trusted_Connection=True;TrustServerCertificate=true;");
+    public virtual DbSet<Tracker> Trackers { get; set; }
+
+    public virtual DbSet<UserLocation> UserLocations { get; set; }
+
+    public virtual DbSet<WorkFlow> WorkFlows { get; set; }
+
+    public virtual DbSet<WorkFlowStep> WorkFlowSteps { get; set; }
+
+    public virtual DbSet<Zone> Zones { get; set; }
+
+    public virtual DbSet<spEnquiryDTO> Enquiries { get; set; }
+
+    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+    //        => optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS01;Database=LeadTracker;Trusted_Connection=True;TrustServerCertificate=true;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -66,15 +92,47 @@ public partial class LeadTrackerContext : DbContext
 
             entity.HasOne(d => d.Code).WithMany(p => p.Addresses)
                 .HasForeignKey(d => d.CodeId)
-                .HasConstraintName("FK__Address__CodeId__02FC7413");
+                .HasConstraintName("FK__Address__CodeId__54CB950F");
+        });
 
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.AddressCreatedByNavigations)
-                .HasForeignKey(d => d.CreatedBy)
-                .HasConstraintName("FK__Address__Created__75A278F5");
+        modelBuilder.Entity<Booking>(entity =>
+        {
+            entity.Property(e => e.Id).HasColumnName("BookingId");
 
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.AddressModifiedByNavigations)
-                .HasForeignKey(d => d.ModifiedBy)
-                .HasConstraintName("FK__Address__Modifie__76969D2E");
+            entity.HasKey(e => e.Id).HasName("PK__Booking__73951AED520F1265");
+
+            entity.ToTable("Booking");
+
+            entity.Property(e => e.AgreementCost).HasColumnType("decimal(19, 2)");
+            entity.Property(e => e.AssignedTo)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.BookingDate).HasColumnType("datetime");
+            entity.Property(e => e.BrokerageSlab)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.ClientEmail)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.ClientName)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.ClientPhone)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.Wing)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.Enquiry).WithMany(p => p.Bookings)
+                .HasForeignKey(d => d.EnquiryId)
+                .HasConstraintName("FK__Booking__Enquiry__58D1301D");
+
+            entity.HasOne(d => d.Project).WithMany(p => p.Bookings)
+                .HasForeignKey(d => d.ProjectId)
+                .HasConstraintName("FK__Booking__Project__59C55456");
         });
 
         modelBuilder.Entity<Branch>(entity =>
@@ -91,14 +149,6 @@ public partial class LeadTrackerContext : DbContext
             entity.HasOne(d => d.Code).WithMany(p => p.Branches)
                 .HasForeignKey(d => d.CodeId)
                 .HasConstraintName("FK__Branch__CodeId__04E4BC85");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.BranchCreatedByNavigations)
-                .HasForeignKey(d => d.CreatedBy)
-                .HasConstraintName("FK__Branch__CreatedB__778AC167");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.BranchModifiedByNavigations)
-                .HasForeignKey(d => d.ModifiedBy)
-                .HasConstraintName("FK__Branch__Modified__787EE5A0");
 
             entity.HasOne(d => d.Org).WithMany(p => p.Branches)
                 .HasForeignKey(d => d.OrgId)
@@ -124,29 +174,64 @@ public partial class LeadTrackerContext : DbContext
                 .HasMaxLength(250)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.CodeCreatedByNavigations)
-                .HasForeignKey(d => d.CreatedBy)
-                .HasConstraintName("FK__Codes__CreatedBy__7D439ABD");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.CodeModifiedByNavigations)
-                .HasForeignKey(d => d.ModifiedBy)
-                .HasConstraintName("FK__Codes__ModifiedB__7E37BEF6");
-
             entity.HasOne(d => d.Org).WithMany(p => p.Codes)
                 .HasForeignKey(d => d.OrgId)
                 .HasConstraintName("FK__Code__OrgId__05D8E0BE");
         });
 
+        modelBuilder.Entity<Document>(entity =>
+        {
+            entity.Property(e => e.Id).HasColumnName("DocumentId");
+            entity.HasKey(e => e.Id).HasName("PK__Document__1ABEEF0F438FC9F7");
+
+            entity.ToTable("Document");
+
+            entity.Property(e => e.Comment).HasMaxLength(500);
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.Location).HasMaxLength(500);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Enquiry).WithMany(p => p.Documents)
+                .HasForeignKey(d => d.EnquiryId)
+                .HasConstraintName("FK__Document__Enquir__7DCDAAA2");
+
+            entity.HasOne(d => d.ModuleTypeNavigation).WithMany(p => p.Documents)
+                .HasForeignKey(d => d.ModuleType)
+                .HasConstraintName("FK__Document__Module__7FB5F314");
+
+            entity.HasOne(d => d.Org).WithMany(p => p.Documents)
+                .HasForeignKey(d => d.OrgId)
+                .HasConstraintName("FK__Document__OrgId__019E3B86");
+
+            entity.HasOne(d => d.Tracker).WithMany(p => p.Documents)
+                .HasForeignKey(d => d.TrackerId)
+                .HasConstraintName("FK__Document__Tracke__7EC1CEDB");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Documents)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK__Document__UserId__00AA174D");
+
+            entity.HasOne(d => d.WorkFlow).WithMany(p => p.Documents)
+                .HasForeignKey(d => d.WorkFlowId)
+                .HasConstraintName("FK__Document__WorkFl__02925FBF");
+
+            entity.HasOne(d => d.WorkFlowStep).WithMany(p => p.Documents)
+                .HasForeignKey(d => d.WorkFlowStepId)
+                .HasConstraintName("FK__Document__WorkFl__038683F8");
+        });
+
         modelBuilder.Entity<Employee>(entity =>
         {
-            entity.Property(e => e.Id).HasColumnName("UserId");
+            entity.Property(e => e.Id).HasColumnName("EmployeeId");
             entity.HasKey(e => e.Id).HasName("PK__Employee__1788CC4CD8101590");
-
             entity.ToTable("Employee");
 
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.EmailId)
                 .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.Gender)
+                .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.Mobile)
                 .HasMaxLength(250)
@@ -163,6 +248,10 @@ public partial class LeadTrackerContext : DbContext
             entity.HasOne(d => d.Org).WithMany(p => p.Employees)
                 .HasForeignKey(d => d.OrgId)
                 .HasConstraintName("FK__Employees__OrgId__5535A963");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.Employees)
+                .HasForeignKey(d => d.RoleId)
+                .HasConstraintName("FK__Employee__RoleID__73852659");
         });
 
         modelBuilder.Entity<EmployeeRole>(entity =>
@@ -173,14 +262,6 @@ public partial class LeadTrackerContext : DbContext
 
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany()
-                .HasForeignKey(d => d.CreatedBy)
-                .HasConstraintName("FK__EmployeeR__Creat__01142BA1");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany()
-                .HasForeignKey(d => d.ModifiedBy)
-                .HasConstraintName("FK__EmployeeR__Modif__02084FDA");
 
             entity.HasOne(d => d.Org).WithMany()
                 .HasForeignKey(d => d.OrgId)
@@ -195,6 +276,126 @@ public partial class LeadTrackerContext : DbContext
                 .HasConstraintName("FK__EmployeeR__UserI__5AEE82B9");
         });
 
+
+      
+
+        modelBuilder.Entity<Lead>(entity =>
+        {
+            entity.Property(e => e.Id).HasColumnName("EnquiryId");
+            entity.HasKey(e => e.Id).HasName("PK__Lead__0A019B7DE448629C");
+
+            entity.ToTable("Lead");
+
+            entity.Property(e => e.Budget).HasColumnType("decimal(19, 2)");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.Date).HasColumnType("datetime");
+            entity.Property(e => e.Description)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.EmailId)
+                .HasMaxLength(250)
+                .IsUnicode(false)
+                .HasColumnName("EmailID");
+            entity.Property(e => e.EnquiryType)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.FinalRemark)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.LeadSource)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.LeadSourceProject)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.MobNo)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.Name)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.Requirement)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.AssignedToNavigation).WithMany(p => p.Leads)
+                .HasForeignKey(d => d.AssignedTo)
+                .HasConstraintName("FK__Lead__AssignedTo__65F62111");
+
+            entity.HasOne(d => d.Org).WithMany(p => p.Leads)
+                .HasForeignKey(d => d.OrgId)
+                .HasConstraintName("FK__Lead__OrgId__79FD19BE");
+
+            entity.HasOne(d => d.TrackerFlowStep).WithMany(p => p.Leads)
+                .HasForeignKey(d => d.TrackerFlowStepId)
+                .HasConstraintName("FK__Lead__TrackerFlo__42ACE4D4");
+        });
+
+        modelBuilder.Entity<LeadSource>(entity =>
+        {
+            entity.HasKey(e => e.EnquiryId).HasName("PK__LeadSour__0A019B7D4A5215E9");
+
+            entity.ToTable("LeadSource");
+
+            entity.Property(e => e.Budget).HasColumnType("decimal(19, 2)");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.Date).HasColumnType("datetime");
+            entity.Property(e => e.Description)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.EmailId)
+                .HasMaxLength(250)
+                .IsUnicode(false)
+                .HasColumnName("EmailID");
+            entity.Property(e => e.EnquiryType)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.FinalRemark)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.LeadSource1)
+                .HasMaxLength(250)
+                .IsUnicode(false)
+                .HasColumnName("LeadSource");
+            entity.Property(e => e.LeadSourceProject)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.MobNo)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.Name)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.Requirement)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.Status)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<Location>(entity =>
+        {
+            entity.Property(e => e.Id).HasColumnName("LocationId");
+            entity.HasKey(e => e.Id).HasName("PK__Location__E7FEA497B463375E");
+
+            entity.ToTable("Location");
+
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.LocationName)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Zone).WithMany(p => p.Locations)
+                .HasForeignKey(d => d.ZoneId)
+                .HasConstraintName("FK__Location__ZoneId__3C34F16F");
+        });
+
+        
+
         modelBuilder.Entity<Organisation>(entity =>
         {
             entity.Property(e => e.Id).HasColumnName("OrgId");
@@ -205,14 +406,6 @@ public partial class LeadTrackerContext : DbContext
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
             entity.Property(e => e.Name).HasMaxLength(250);
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.OrganisationCreatedByNavigations)
-                .HasForeignKey(d => d.CreatedBy)
-                .HasConstraintName("FK__Organizat__Creat__73BA3083");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.OrganisationModifiedByNavigations)
-                .HasForeignKey(d => d.ModifiedBy)
-                .HasConstraintName("FK__Organizat__Modif__74AE54BC");
         });
 
         modelBuilder.Entity<Permission>(entity =>
@@ -226,17 +419,57 @@ public partial class LeadTrackerContext : DbContext
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
             entity.Property(e => e.Name).HasMaxLength(250);
 
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PermissionCreatedByNavigations)
-                .HasForeignKey(d => d.CreatedBy)
-                .HasConstraintName("FK__Permissio__Creat__7B5B524B");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.PermissionModifiedByNavigations)
-                .HasForeignKey(d => d.ModifiedBy)
-                .HasConstraintName("FK__Permissio__Modif__7C4F7684");
-
             entity.HasOne(d => d.Org).WithMany(p => p.Permissions)
                 .HasForeignKey(d => d.OrgId)
                 .HasConstraintName("FK__Permissio__OrgId__52593CB8");
+        });
+
+        modelBuilder.Entity<Project>(entity =>
+        {
+            entity.Property(e => e.Id).HasColumnName("ProjectId");
+            entity.HasKey(e => e.Id).HasName("PK__Project__761ABEF0DEF8FA1B");
+
+            entity.ToTable("Project");
+
+            entity.Property(e => e.Address)
+                .HasMaxLength(500)
+                .IsUnicode(false);
+            entity.Property(e => e.BuilderName)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ProjectName)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.Location).WithMany(p => p.Projects)
+                .HasForeignKey(d => d.LocationId)
+                .HasConstraintName("FK__Project__Locatio__41EDCAC5");
+        });
+
+        modelBuilder.Entity<ProjectDetail>(entity =>
+        {
+            entity.Property(e => e.Id).HasColumnName("ProjectDetailsId");
+            entity.HasKey(e => e.Id).HasName("PK__ProjectD__38DB9E06D261836D");
+
+            entity.ToTable("ProjectDetail");
+
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.Floor)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.Unit)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.Wing)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.Project).WithMany(p => p.ProjectDetails)
+                .HasForeignKey(d => d.ProjectId)
+                .HasConstraintName("FK__ProjectDe__Proje__540C7B00");
         });
 
         modelBuilder.Entity<Role>(entity =>
@@ -249,14 +482,6 @@ public partial class LeadTrackerContext : DbContext
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
             entity.Property(e => e.Name).HasMaxLength(250);
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.RoleCreatedByNavigations)
-                .HasForeignKey(d => d.CreatedBy)
-                .HasConstraintName("FK__Roles__CreatedBy__797309D9");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.RoleModifiedByNavigations)
-                .HasForeignKey(d => d.ModifiedBy)
-                .HasConstraintName("FK__Roles__ModifiedB__7A672E12");
 
             entity.HasOne(d => d.Org).WithMany(p => p.Roles)
                 .HasForeignKey(d => d.OrgId)
@@ -273,14 +498,6 @@ public partial class LeadTrackerContext : DbContext
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
 
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.RolePermissionCreatedByNavigations)
-                .HasForeignKey(d => d.CreatedBy)
-                .HasConstraintName("FK__RolePermi__Creat__7F2BE32F");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.RolePermissionModifiedByNavigations)
-                .HasForeignKey(d => d.ModifiedBy)
-                .HasConstraintName("FK__RolePermi__Modif__00200768");
-
             entity.HasOne(d => d.Org).WithMany(p => p.RolePermissions)
                 .HasForeignKey(d => d.OrgId)
                 .HasConstraintName("FK__RolePermi__OrgId__619B8048");
@@ -294,8 +511,128 @@ public partial class LeadTrackerContext : DbContext
                 .HasConstraintName("FK__RolePermi__RoleI__5FB337D6");
         });
 
+
+        modelBuilder.Entity<Tracker>(entity =>
+        {
+            entity.Property(e => e.Id).HasColumnName("TrackerId");
+            entity.HasKey(e => e.Id).HasName("PK__Tracker__DEF88A01B0151E11");
+
+            entity.ToTable("Tracker");
+
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.Date).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.Remark)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.VisitExpectedDate).HasColumnType("datetime");
+            entity.Property(e => e.VisitRemark)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.Org).WithMany(p => p.Trackers)
+                .HasForeignKey(d => d.OrgId)
+                .HasConstraintName("FK__Tracker__OrgId__7AF13DF7");
+
+            entity.HasOne(d => d.WorkFlow).WithMany(p => p.Trackers)
+                .HasForeignKey(d => d.WorkFlowId)
+                .HasConstraintName("FK__Tracker__WorkFlo__52E34C9D");
+
+            entity.HasOne(d => d.WorkFlowStep).WithMany(p => p.Trackers)
+                .HasForeignKey(d => d.WorkFlowStepId)
+                .HasConstraintName("FK__Tracker__WorkFlo__53D770D6");
+        });
+
+        modelBuilder.Entity<UserLocation>(entity =>
+        {
+            entity.HasKey(e => e.UserLocationId).HasName("PK__UserLoca__3C542CAA2F391518");
+
+            entity.ToTable("UserLocation");
+
+            entity.Property(e => e.CurrentLatitude)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.CurrentLongitude)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.Date).HasColumnType("datetime");
+            entity.Property(e => e.StartLatitude)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.StartLongitude)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.Org).WithMany(p => p.UserLocations)
+                .HasForeignKey(d => d.OrgId)
+                .HasConstraintName("FK__UserLocat__OrgId__0EF836A4");
+
+            entity.HasOne(d => d.User).WithMany(p => p.UserLocations)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK__UserLocat__UserI__0E04126B");
+        });
+
+
+        modelBuilder.Entity<WorkFlow>(entity =>
+        {
+            entity.Property(e => e.Id).HasColumnName("WorkFlowId");
+            entity.HasKey(e => e.Id).HasName("PK__WorkFlow__F98B18EE97E54649");
+
+            entity.ToTable("WorkFlow");
+
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.WorkFlowName).HasMaxLength(250);
+
+            entity.HasOne(d => d.Org).WithMany(p => p.WorkFlows)
+                .HasForeignKey(d => d.OrgId)
+                .HasConstraintName("FK__WorkFlow__OrgId__6AEFE058");
+        });
+
+       
+
+        modelBuilder.Entity<WorkFlowStep>(entity =>
+        {
+            entity.Property(e => e.Id).HasColumnName("WorkFlowStepId");
+            entity.HasKey(e => e.Id).HasName("PK__WorkFlow__025B35FB8909F460");
+
+            entity.ToTable("WorkFlowStep");
+
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.CurrentStep).HasMaxLength(250);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.NextStep).HasMaxLength(250);
+            entity.Property(e => e.PreviousStep).HasMaxLength(250);
+
+            entity.HasOne(d => d.Org).WithMany(p => p.WorkFlowSteps)
+                .HasForeignKey(d => d.OrgId)
+                .HasConstraintName("FK__WorkFlowS__OrgId__70A8B9AE");
+
+            entity.HasOne(d => d.WorkFlow).WithMany(p => p.WorkFlowSteps)
+                .HasForeignKey(d => d.WorkFlowId)
+                .HasConstraintName("FK__WorkFlowS__WorkF__6FB49575");
+        });
+
+        modelBuilder.Entity<Zone>(entity =>
+        {
+            entity.Property(e => e.Id).HasColumnName("ZoneId");
+            entity.HasKey(e => e.Id).HasName("PK__Zone__601667B5323531CE");
+
+
+            entity.ToTable("Zone");
+
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ZoneName)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<spEnquiryDTO>().HasNoKey();
+
         OnModelCreatingPartial(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }
+

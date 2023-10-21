@@ -1,4 +1,5 @@
-﻿using LeadTracker.Core.DTO;
+﻿using LeadTracker.API;
+using LeadTracker.Core.DTO;
 using LeadTracker.Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,11 @@ namespace LeadTracker.BusinessLayer.IService
     {
         Task CreateEmployee(EmployeeDTO employee);
 
-        Task<Employee> GetEmployeeByIdAsync(int id);
+        Task<EmployeeDTO> GetEmployeeByIdAsync(int id);
 
-        Task<IEnumerable<Employee>> GetAllEmployeeAsync();
+        Task<IEnumerable<EmployeeDTO>> GetAllEmployeeAsync();
 
-        Task UpdateEmployeeAsync(EmployeeDTO employee);
+        Task UpdateEmployeeAsync(int id, EmployeeDTO employee);
 
         Task DeleteEmployeeAsync(int id);
     }

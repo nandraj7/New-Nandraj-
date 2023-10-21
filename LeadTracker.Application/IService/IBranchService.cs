@@ -1,4 +1,5 @@
-﻿using LeadTracker.Core.DTO;
+﻿using LeadTracker.API;
+using LeadTracker.Core.DTO;
 using LeadTracker.Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,11 @@ namespace LeadTracker.BusinessLayer.IService
     {
         Task CreateBranch(BranchDTO branch);
 
-        Task<Branch> GetBranchByIdAsync(int id);
+        Task<BranchDTO> GetBranchByIdAsync(int id);
 
-        Task<IEnumerable<Branch>> GetAllBranchAsync();
+        Task<IEnumerable<BranchDTO>> GetAllBranchAsync();
 
-        Task UpdateBranchAsync(BranchDTO branch);
+        Task UpdateBranchAsync(int id, BranchDTO branch);
 
         Task DeleteBranchAsync(int id);
     }

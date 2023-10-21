@@ -1,12 +1,16 @@
 ﻿using LeadTracker.BusinessLayer.IService;
+using LeadTracker.BusinessLayer.Service;
 using LeadTracker.Core.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace LeadTracker.API.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
+    
     public class AddressController : BaseController
     {
         private readonly IAddressService _addressService;
@@ -54,7 +58,7 @@ namespace LeadTracker.API.Controllers
                 return BadRequest();
             }
 
-            await _addressService.UpdateAddressAsync(address).ConfigureAwait(false);
+            await _addressService.UpdateAddressAsync(id,address).ConfigureAwait(false);
             return NoContent();
         }
 
@@ -67,5 +71,6 @@ namespace LeadTracker.API.Controllers
         }
     }
 }
+
 
 

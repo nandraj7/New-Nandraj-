@@ -1,12 +1,15 @@
 ﻿using LeadTracker.Application.IService;
+using LeadTracker.BusinessLayer.IService;
+using LeadTracker.BusinessLayer.Service;
 using LeadTracker.Core.DTO;
-using LeadTracker.Core.Entities;
-using LeadTracker.Core.Extension;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+
+
 namespace LeadTracker.API.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class OrganisationController : BaseController
@@ -54,7 +57,7 @@ namespace LeadTracker.API.Controllers
                 return BadRequest();
             }
 
-            await _orgnisationService.UpdateOrganisationAsync(organisation).ConfigureAwait(false);
+            await _orgnisationService.UpdateOrganisationAsync(id, organisation).ConfigureAwait(false);
             return NoContent();
         }
 
@@ -64,5 +67,19 @@ namespace LeadTracker.API.Controllers
             await _orgnisationService.DeleteOrganisationAsync(id).ConfigureAwait(false);
             return NoContent();
         }
+
+        //[HttpGet("GetEnquiriesByUserIdAndWorkflowId")]
+        //public async Task<ActionResult<List<EnquiryDTO>>> GetEnquiriesByUserIdAndWorkflowId(int userId, int workflowId)
+        //{
+        //    var enquiryDTO = await _orgnisationService.GetEnquiriesByUserIdAndWorkflowIdAsync(userId, workflowId).ConfigureAwait(false);
+
+        //    if (enquiryDTO == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return Ok(enquiryDTO);
+        //}
+
     }
 }

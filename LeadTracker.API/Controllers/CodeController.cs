@@ -1,12 +1,13 @@
-﻿using LeadTracker.Application.IService;
-using LeadTracker.BusinessLayer.IService;
+﻿using LeadTracker.BusinessLayer.IService;
 using LeadTracker.BusinessLayer.Service;
 using LeadTracker.Core.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace LeadTracker.API.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class CodeController : BaseController
@@ -57,7 +58,7 @@ namespace LeadTracker.API.Controllers
                 return BadRequest();
             }
 
-            await _codeService.UpdateCodeAsync(code).ConfigureAwait(false);
+            await _codeService.UpdateCodeAsync(id, code).ConfigureAwait(false);
             return NoContent();
         }
 

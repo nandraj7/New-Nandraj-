@@ -1,4 +1,5 @@
-﻿using LeadTracker.Core.Entities;
+﻿using LeadTracker.API;
+using LeadTracker.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace LeadTracker.Infrastructure.IRepository
 {
     public interface IEmployeeRepository : IRepository<Employee>
     {
-
+        Task<Employee> GetUserLoginAsync(string mobile, string password);
     }
 }

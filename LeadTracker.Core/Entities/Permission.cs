@@ -1,7 +1,8 @@
-﻿using System;
+﻿using LeadTracker.Core.Entities;
+using System;
 using System.Collections.Generic;
 
-namespace LeadTracker.Core.Entities;
+namespace LeadTracker.API;
 
 public partial class Permission : Identity
 {
@@ -13,10 +14,7 @@ public partial class Permission : Identity
 
     public int? OrgId { get; set; }
 
-  
-    public virtual Employee? CreatedByNavigation { get; set; }
-
-    public virtual Employee? ModifiedByNavigation { get; set; }
+   
 
     public virtual Organisation? Org { get; set; }
 

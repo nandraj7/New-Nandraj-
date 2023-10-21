@@ -4,8 +4,10 @@ using LeadTracker.Core.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace LeadTracker.API.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class RoleController : BaseController
@@ -53,7 +55,7 @@ namespace LeadTracker.API.Controllers
                 return BadRequest();
             }
 
-            await _roleService.UpdateRoleAsync(role).ConfigureAwait(false);
+            await _roleService.UpdateRoleAsync(id, role).ConfigureAwait(false);
             return NoContent();
         }
 

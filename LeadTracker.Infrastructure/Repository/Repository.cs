@@ -27,6 +27,7 @@ namespace LeadTracker.Infrastructure
         public async Task<IQueryable<T>> GetAllAsync()
         {
             return await Task.FromResult(_context.Set<T>().AsNoTracking());
+
         }
 
         public async Task<IQueryable<T>> GetByConditionAsync(Expression<Func<T, bool>> expression)
@@ -36,22 +37,20 @@ namespace LeadTracker.Infrastructure
 
         public async Task CreateAsync(T entity)
         {
+            entity.IsActive = true;
+            entity.CreatedDate = DateTime.UtcNow;
+            entity.ModifiedDate = DateTime.UtcNow;
+            entity.IsDeleted = false;
+
             await _context.Set<T>().AddAsync(entity).ConfigureAwait(false);
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task UpdateAsync(T entity)
         {
-            //_context.Set<T>().Update(entity);
-            //await _context.SaveChangesAsync();
-
-            var existingEntity = await _context.Set<T>().FindAsync(entity.Id);
-            if (existingEntity != null)
-            {
-                
-                _context.Entry(existingEntity).CurrentValues.SetValues(entity);
-                await _context.SaveChangesAsync();
-            }
+            entity.ModifiedDate = DateTime.UtcNow;
+            _context.Set<T>().Update(entity);
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
@@ -63,14 +62,5 @@ namespace LeadTracker.Infrastructure
             await _context.SaveChangesAsync();
         }
 
-        //public Task<T> GetByIdAsync(long id)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task DeleteAsync(long id)
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 }

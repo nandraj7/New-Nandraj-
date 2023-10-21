@@ -1,4 +1,5 @@
-﻿using LeadTracker.Core.DTO;
+﻿using LeadTracker.API;
+using LeadTracker.Core.DTO;
 using LeadTracker.Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,9 @@ namespace LeadTracker.BusinessLayer.IService
     public interface IRoleService
     {
         Task CreateRole(RoleDTO role);
-        Task<Role> GetRoleByIdAsync(int id);
-        Task<IEnumerable<Role>> GetAllRoleAsync();
-        Task UpdateRoleAsync(RoleDTO role);
+        Task<RoleDTO> GetRoleByIdAsync(int id);
+        Task<IEnumerable<RoleDTO>> GetAllRoleAsync();
+        Task UpdateRoleAsync(int id, RoleDTO role);
         Task DeleteRoleAsync(int id);
     }
 }

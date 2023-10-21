@@ -1,13 +1,17 @@
 ﻿using LeadTracker.BusinessLayer.IService;
 using LeadTracker.BusinessLayer.Service;
 using LeadTracker.Core.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace LeadTracker.API.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class EmployeeController : BaseController
     {
         private readonly IEmployeeService _employeeService;
@@ -25,6 +29,7 @@ namespace LeadTracker.API.Controllers
 
             return Ok(employee);
         }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<EmployeeDTO>> GetEmployee(int id)
@@ -49,12 +54,12 @@ namespace LeadTracker.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateEmployee(int id, EmployeeDTO employee)
         {
-            if (id != employee.UserId)
+            if (id != employee.EmployeeId)
             {
                 return BadRequest();
             }
 
-            await _employeeService.UpdateEmployeeAsync(employee).ConfigureAwait(false);
+            await _employeeService.UpdateEmployeeAsync(id, employee).ConfigureAwait(false);
             return NoContent();
         }
 

@@ -25,5 +25,7 @@ namespace LeadTracker.Core.DTO
         public int? CreatedBy { get; set; }
 
         public int? ModifiedBy { get; set; }
+
+
     }
 }

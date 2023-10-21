@@ -1,9 +1,10 @@
-﻿using System;
+﻿using LeadTracker.Core.Entities;
+using System;
 using System.Collections.Generic;
 
-namespace LeadTracker.Core.Entities;
+namespace LeadTracker.API;
 
-public partial class EmployeeRole : Identity
+public partial class EmployeeRole
 {
     public int? UserId { get; set; }
 
@@ -11,7 +12,16 @@ public partial class EmployeeRole : Identity
 
     public int? OrgId { get; set; }
 
-   
+    public bool? IsActive { get; set; }
+
+    public bool? IsDeleted { get; set; }
+
+ 
+
+    public DateTime? CreatedDate { get; set; }
+
+
+    public DateTime? ModifiedDate { get; set; }
 
     public virtual Employee? CreatedByNavigation { get; set; }
 
