@@ -50,6 +50,21 @@ namespace LeadTracker.Core.DTO
 
         public int? OrgId { get; set; }
 
+        public string? PriorityStatus { get; set; }
+        public string? Requirement { get; set; }
+        public string? Budget { get; set; }
+        public string? Purpose { get; set; }
+
+        public decimal? CompanyPercentage { get; set; }
+
+        public decimal? EmployeePercentage { get; set; }
+
+        public decimal? TDS { get; set; }
+
+        public decimal? RegistrationValue { get; set; }
+
+        public decimal? TotalIncentive { get; set; }
+
         //
         public LeadDTO? Enquiry { get;set; }
 

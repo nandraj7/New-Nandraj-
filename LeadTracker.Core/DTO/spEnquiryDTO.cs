@@ -17,7 +17,7 @@ namespace LeadTracker.Core.DTO
         public string ContactNumber { get; set; }
         public string EmailId { get; set; }
         public string Requirement { get; set; }
-        public decimal Budget { get; set; }
+        public string Budget { get; set; }
         public string Description { get; set; }
         public int Status { get; set; }
         public int TrackerFlowId { get; set; }

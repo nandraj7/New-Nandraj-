@@ -1,0 +1,445 @@
+export const homeTour = [
+  {
+    target: ".tour_accountSettingMenu",
+    content: (
+      <ContentComponent
+        //imgSource={TourAssets.ProfileMenuTour}
+        title=" Explore Your Profile Menu."
+    description="Access your account details and purchase history from the profile menu."
+
+      />
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    hideCloseButton: true,
+    hideFooter: true,
+    placement: "bottom",
+    spotlightClicks: true,
+    hideBackButton: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: ".tour_activateAccount",
+    content: (
+      <ContentComponent
+        title="Activate Your Account"
+        description="Activate your account to unlock exclusive benefits."
+      />
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    // hideCloseButton: true,
+    // hideFooter: true,
+    placement: "bottom",
+    spotlightClicks: true,
+    hideBackButton: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: ".tour_upgrade",
+    content: (
+      <ContentComponent
+        // imgSource={TourAssets.effect}
+        title="Upgrade Your Account"
+        description="Purchase premium images and videos after upgrading your account."
+      />
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    // hideCloseButton: true,
+    // hideFooter: true,
+    placement: "left",
+    spotlightClicks: true,
+    hideBackButton: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: ".tour_purchaseHistory",
+    content: (
+      <ContentComponent
+        title="Check Purchase History"
+        description="Review your list of past purchases in this section."
+
+      />
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    // hideCloseButton: true,
+    // hideFooter: true,
+    placement: "bottom",
+    spotlightClicks: true,
+    hideBackButton: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: ".tour_myProfile",
+    content: (
+      <ContentComponent
+        title="Visit Your Profile"
+        description="Explore your detailed profile information and settings."
+
+      />
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    // hideCloseButton: true,
+    // hideFooter: true,
+    placement: "bottom",
+    spotlightClicks: true,
+    hideBackButton: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: ".tour_search",
+    content: (
+      <ContentComponent
+        title="Search Your Designs"
+        description="Quickly find your created designs with the search feature."
+
+      />
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    hideBackButton: true,
+    // hideCloseButton: true,
+    // hideFooter: true,
+    placement: "left",
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+
+  {
+    target: ".tourCustomSize",
+    content: (
+      <ContentComponent
+        // imgSource={TourAssets.canvasSizeTour}
+        title=" Design with Custom Canvas Sizes"
+        description="Customize canvas width and height for your unique design needs."
+
+        />
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    // hideCloseButton: true,
+    // hideFooter: true,
+    placement: "right",
+    spotlightClicks: true,
+    disableScrolling: false,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: ".tourGuideVideo",
+    content: (
+      <ContentComponent
+        title="Create Videos"
+        description="Craft engaging videos using the video canvas feature."
+      />
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    // hideCloseButton: true,
+    // hideFooter: true,
+    placement: "right",
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: ".tourGuideTemplate",
+    content: (
+      <ContentComponent
+        title="Explore Templates"
+        description="Dive into the world of exciting design templates."
+      />
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    // hideCloseButton: true,
+    // hideFooter: true,
+    placement: "left",
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: ".tour_homeRecentDesign",
+    content: (
+      <ContentComponent
+        title="Your Recent Designs"
+        description="Access your recently created designs effortlessly."
+      />
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    // hideCloseButton: true,
+    // hideFooter: true,
+    placement: "left",
+    spotlightClicks: true,
+    disableScrolling: false,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+];
+
+export const myProjectTour = [
+  {
+    target: ".tour_myDesignSearch",
+    content: (
+      <ContentComponent
+        // title="Search your design"
+        // description="You can search your created design"
+        title="Search Your Project Designs"
+        description="Easily locate your project designs using the search ."
+      />
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    // hideCloseButton: true,
+    // hideFooter: true,
+    placement: "left",
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: ".tourCreateNewFolder",
+    content: (
+      <ContentComponent
+      title="Organize Your Projects"
+      description="Click here to create a new folder for organizing your designs" />
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    // hideCloseButton: true,
+    // hideFooter: true,
+    placement: "bottom",
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: ".tour_newFolder",
+    content: (
+      <ContentComponent
+      title="Manage Your Folder"
+      description="Store your designs in the newly created folder for better organization." />
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    // hideCloseButton: true,
+    // hideFooter: true,
+    placement: "right",
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+];
+
+export const myProjectTourForDesign = [
+  {
+    target: ".tour_myDesignSearch",
+    content: (
+      <ContentComponent
+        title=" Search Your Project Designs"
+        description="Quickly find your project designs using the search bar."
+      />
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    // hideCloseButton: true,
+    // hideFooter: true,
+    placement: "left",
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: ".tour_recentDesign",
+    content:( <ContentComponent
+    titlt=" View Your First Design"
+     description="Here is you 1st design."
+      />),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    // hideCloseButton: true,
+    // hideFooter: true,
+    placement: "bottom",
+    spotlightClicks: true,
+    // disableScrolling: false,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: ".tourCreateNewFolder",
+    content: (
+      <ContentComponent
+      titlr="Organize Your Projects"
+       description="Initiate a new folder to manage your design projects." />
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    // hideCloseButton: true,
+    // hideFooter: true,
+    placement: "bottom",
+    spotlightClicks: true,
+    disableScrolling: false,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: ".tour_newFolder",
+    content: (
+      <ContentComponent
+      title="Manage Your Folder"
+       description="Store and categorize your designs within the newly created folder." />
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    // hideCloseButton: true,
+    // hideFooter: true,
+    placement: "right",
+    spotlightClicks: true,
+    disableScrolling: false,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: ".tour_MyDesign",
+    content: (
+      <ContentComponent
+      title="Explore Your Project Designs"
+      description="Navigate and access all your created project designs." />
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    // hideCloseButton: true,
+    // hideFooter: true,
+    placement: "right",
+    spotlightClicks: true,
+    disableScrolling: false,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+];
+
+export const templatesTour = [
+  {
+    target: ".tour_templateSearch",
+    content: (
+      <ContentComponent
+        title="Search Design Templates"
+        description="Locate your desired design templates with the search feature."ks
+      />
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    // hideCloseButton: true,
+    // hideFooter: true,
+    placement: "left",
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: ".tour_browseCategory",
+    content: (
+<ContentComponent
+title="Explore Template Categories"
+description="Here is the book cover template." />
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    // hideCloseButton: true,
+    // hideFooter: true,
+    placement: "top",
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: ".tour_bookCover",
+    content: (
+      <ContentComponent
+    title=" Book Cover Templates"
+    description="Explore a variety of book cover templates for your creative projects." />
+    ),
+    disableBeacon: true,
+    disableOverlayClose: true,
+    // hideCloseButton: true,
+    // hideFooter: true,
+    placement: "top",
+    spotlightClicks: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+];

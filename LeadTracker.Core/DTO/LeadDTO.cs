@@ -24,7 +24,7 @@ namespace LeadTracker.Core.DTO
 
         public string? Requirement { get; set; }
 
-        public decimal? Budget { get; set; }
+        public string? Budget { get; set; }
 
         public string? Description { get; set; }
 
@@ -51,5 +51,10 @@ namespace LeadTracker.Core.DTO
         public DateTime? ModifiedDate { get; set; }
 
         public int? OrgId { get; set; }
+
+        public string? Purpose { get; set; }
+
+
+
     }
 }

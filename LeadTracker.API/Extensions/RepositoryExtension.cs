@@ -11,17 +11,24 @@ namespace LeadTracker.API.Extensions
         {
             services.AddScoped<IAddressRepository, AddressRepository>();
 
+            services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+
             services.AddScoped<IBranchRepository, BranchRepository>();
 
             services.AddScoped<ICodeRepository, CodeRepository>();
 
             services.AddScoped<IDocumentRepository, DocumentRepository>();
 
+            services.AddScoped<IEducationRepository, EducationRepository>();
+
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
+            services.AddScoped<IHolidayRepository, HolidayRepository>();
 
             services.AddScoped<IEmployeeRoleRepository, EmployeeRoleRepository>();
 
             services.AddScoped<IOrganisationRepository, OrganisationRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
 
             services.AddScoped<IPermissionRepository, PermissionRepository>();
 
@@ -44,6 +51,7 @@ namespace LeadTracker.API.Extensions
             services.AddScoped<ITrackerRepository, TrackerRepository>();
 
             services.AddScoped<IUserLocationRepository, UserLocationRepository>();
+            services.AddScoped<IVisitTrackingRepository, VisitTrackingRepository>();
 
             services.AddScoped<IZoneRepository, ZoneRepository>();
 

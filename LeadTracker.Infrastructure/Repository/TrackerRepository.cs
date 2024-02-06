@@ -33,7 +33,7 @@ namespace LeadTracker.Infrastructure.Repository
         {
             return await _context.WorkFlowSteps
                 .Where(step => step.Id == workFlowStepId)
-                .Select(step => step.CurrentStep)
+                .Select(step => step.StepName)
                 .FirstOrDefaultAsync()
                 .ConfigureAwait(false);
         }
@@ -42,11 +42,11 @@ namespace LeadTracker.Infrastructure.Repository
         public async Task CreateTrackerAsync(Tracker entity)
         {
             entity.IsActive = true;
-            entity.CreatedDate = DateTime.UtcNow;
-            entity.ModifiedDate = DateTime.UtcNow;
+            entity.CreatedDate = DateTime.Now;
+            entity.ModifiedDate = DateTime.Now;
             entity.IsDeleted = false;
 
-            
+
             var previousTrackers = _context.Set<Tracker>()
                 .Where(t => t.EnquiryId == entity.EnquiryId)
                 .ToList();
@@ -55,18 +55,65 @@ namespace LeadTracker.Infrastructure.Repository
             {
 
                 previousTracker.IsStepCompleted = true;
+                previousTracker.ModifiedDate = DateTime.Now;
                 _context.Entry(previousTracker).State = EntityState.Modified;
             }
 
-            
+
             await _context.Set<Tracker>().AddAsync(entity).ConfigureAwait(false);
 
-            
+
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
+        public List<spStepCountDTO> GetspCountsByUserIdandOrgIdAsync(int userId, int orgId)
+        {
+            var parameters = new List<SqlParameter>
+            {
+               new SqlParameter("@UserId", userId),
+               new SqlParameter("@OrgId", orgId)
+            };
 
+            var result = _context.Set<spStepCountDTO>()
+            .FromSqlRaw("GetTrackerStepCounts @UserId, @OrgId", parameters.ToArray()).ToList();
+        
+            return result;
 
+        }
+
+        public async Task<Tracker> CreateTrackerByLeadSourceAsync(Tracker tracker)
+        {
+            try
+            {
+                await _context.Trackers.AddAsync(tracker);
+                await _context.SaveChangesAsync(); 
+
+                return tracker; 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error creating Tracker.", ex);
+            }
+        }
+
+        public TrackerDataDTO GetTrackerByTrackerIdAsync(int trackerId)
+        {
+            //var trackerIdParam = new SqlParameter("@TrackerId", trackerId);
+
+            var parameters = new List<SqlParameter>
+                {
+                   new SqlParameter("@TrackerId", trackerId)
+                };
+
+            var result = _context.Set<TrackerDataDTO>()
+                        .FromSqlRaw("EXEC spGetTrackerById @TrackerId", parameters.ToArray())
+                        .AsEnumerable()
+                       .FirstOrDefault();
+            return result;
+
+        }
 
     }
 }
+
+

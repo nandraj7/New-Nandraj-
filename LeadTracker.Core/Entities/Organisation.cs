@@ -1,4 +1,6 @@
-﻿using LeadTracker.Core.Entities;
+﻿using LeadTracker.API.Entities;
+using LeadTracker.API.LeadTracker.API.SQL;
+using LeadTracker.Core.Entities;
 using System;
 using System.Collections.Generic;
 
@@ -19,7 +21,11 @@ public partial class Organisation : Identity
 
     public virtual ICollection<Employee> Employees { get; set; } = new List<Employee>();
 
+    public virtual ICollection<Holiday> Holidays { get; set; } = new List<Holiday>();
+
     public virtual ICollection<Lead> Leads { get; set; } = new List<Lead>();
+
+    public virtual ICollection<OrgAttendanceLocation> OrgAttendanceLocations { get; set; } = new List<OrgAttendanceLocation>();
 
     public virtual ICollection<Permission> Permissions { get; set; } = new List<Permission>();
 
@@ -29,7 +35,11 @@ public partial class Organisation : Identity
 
     public virtual ICollection<Tracker> Trackers { get; set; } = new List<Tracker>();
 
+    public virtual ICollection<SystemConfiguration> SystemConfigurations { get; set; } = new List<SystemConfiguration>();
+
     public virtual ICollection<UserLocation> UserLocations { get; set; } = new List<UserLocation>();
+
+    public virtual ICollection<WorkFlowDetail> WorkFlowDetails { get; set; } = new List<WorkFlowDetail>();
 
     public virtual ICollection<WorkFlowStep> WorkFlowSteps { get; set; } = new List<WorkFlowStep>();
 

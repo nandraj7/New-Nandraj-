@@ -11,13 +11,15 @@ namespace LeadTracker.BusinessLayer.IService
 {
     public interface IProjectService
     {
-        Task CreateProject(ProjectDTO project);
+        Task CreateProject(ProjectDTO project, int userId);
+        Task<Project> UpdateProjectAsync(int id, ProjectDTO project, int userId);
+        //Task CreateProject(ProjectDTO project);
 
-        Task<ProjectDTO> GetProjectByIdAsync(int id);
+        Task<NewProjectDTO> GetProjectByIdAsync(int id);
 
-        Task<IEnumerable<ProjectDTO>> GetAllProjectAsync();
+        Task<IEnumerable<NewProjectDTO>> GetAllProjectAsync();
 
-        Task UpdateProjectAsync(int id, ProjectDTO project);
+        //Task UpdateProjectAsync(int id, ProjectDTO project);
 
         Task DeleteProjectAsync(int id);
     }

@@ -1,6 +1,7 @@
 ﻿using LeadTracker.Core.Entities;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace LeadTracker.API;
 
@@ -23,7 +24,7 @@ public partial class Lead : Identity
 
     public string? Requirement { get; set; }
 
-    public decimal? Budget { get; set; }
+    public string? Budget { get; set; }
 
     public string? Description { get; set; }
 
@@ -33,7 +34,7 @@ public partial class Lead : Identity
 
     public string? EnquiryType { get; set; }
 
-   
+    public string Purpose { get; set; }
 
     public int? TrackerFlowStepId { get; set; }
 
@@ -44,7 +45,7 @@ public partial class Lead : Identity
    
 
     public int? OrgId { get; set; }
-
+    [JsonIgnore]
     public virtual Employee? AssignedToNavigation { get; set; }
 
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
@@ -52,7 +53,10 @@ public partial class Lead : Identity
     public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
 
     public virtual Organisation? Org { get; set; }
-
+    [JsonIgnore]
     public virtual WorkFlowStep? TrackerFlowStep { get; set; }
+    public virtual ICollection<VisitTracking> VisitTrackings { get; set; } = new List<VisitTracking>();
+
+
 }
 

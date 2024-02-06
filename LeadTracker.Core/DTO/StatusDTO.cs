@@ -15,7 +15,21 @@ namespace LeadTracker.Core.DTO
 
         public int? TrackerId { get; set; }
 
+        public string? Name { get; set; }
+
         public int? ModuleType { get; set; }
+
+
+
+        public DateTime? VisitExpectedDate { get; set; }
+
+        public int? VisitedProjectId { get; set; }
+
+        public string? PriorityStatus { get; set; }
+
+        public string? Requirement { get; set; }
+
+        public string? Budget { get; set; }
 
         public string? Comment { get; set; }
 
@@ -25,7 +39,14 @@ namespace LeadTracker.Core.DTO
 
         public int? NextWorkFlowStepId { get; set; }
 
-      
+        public string? Purpose { get; set; }
+
+        public decimal? CompanyPercentage { get; set; }
+        public decimal? EmployeePercentage { get; set; }
+        public decimal? RegistrationValue { get; set; }
+        public decimal? TotalIncentive { get; set; }
+        public decimal? TDS { get; set; }
+
 
     }
 }

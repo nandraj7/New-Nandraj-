@@ -1,0 +1,51 @@
+1. if we change some files before pull we need stash this file.
+2. if changes is not needed discard and take pull using below command 
+
+
+
+git pull origin dev_branch name --> for pull
+
+after that 
+check 2-3 your in vs code updated changes is reflected or not 
+
+by thamb stash ch command lihun ja ky ast te op
+
+1. stash --> use to store all your changed file in one directory 
+
+git stash --> use to stash your files 
+
+after stash we can don following action 
+
+1.create new branch -- its  only for new branch creation 
+2. take pull 
+
+example - 
+1. suppose you are doing changes in staging file. but your changes is affected on exiting changes 
+that time senior suggested you to create new branch. but you did changes in staging 
+that time used 
+
+git stash
+
+then your changes is store and you are able to create new branch 
+
+then use 
+
+git pop --? use to restore your stash files 
+
+then git add.
+
+git commit 
+
+git push 
+
+code changes successfully push in new branch 
+
+this is all about flow .
+
+--------------------------------------------------------------------------------------------------------------------------
+
+2. take pull --> if we have exiting branches and we want updated code 
+
+that time we need to take pull from origin branch like staging pull in swati_1 
+
+

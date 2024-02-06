@@ -10,5 +10,6 @@ namespace LeadTracker.Infrastructure.IRepository
 {
     public interface IRoleRepository : IRepository<Role>
     {
+        Task<string?> GetRoleNameByIdAsync(int? roleId);
     }
 }

@@ -1,0 +1,9 @@
+<div class="col-12 mt-3">
+                
+    <div *ngIf="!isDisabled"  class="mb-3">
+        <app-document-upload-component *ngIf="!isDisabled"  [documentDetails]="documetDetailsForm" 
+            (getUploadedDocumentDetails)="getUploadedDocDetails($event)" [resourceId]="mergeId"
+            [isFileUploadVisible]="isFileUploadVisible" (setFileUploadVisible)="setFileUploadVisible($event)">
+        </app-document-upload-component>
+    </div>
+    </div>

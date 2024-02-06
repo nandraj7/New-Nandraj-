@@ -26,20 +26,21 @@ namespace LeadTracker.Infrastructure.Repository
         public async Task CreateDocument(Document document)
         {
             document.IsActive = true;
-            document.CreatedDate = DateTime.UtcNow;
-            document.ModifiedDate = DateTime.UtcNow;
+            document.CreatedDate = DateTime.Now;
+            document.ModifiedDate = DateTime.Now;
             document.IsDeleted = false;
 
             await (_context as LeadTrackerContext).Documents.AddAsync(document).ConfigureAwait(false);
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task CreateTracker(Tracker tracker)
+        public async Task CreateTracker(Tracker tracker, StatusDTO status)
         {
             tracker.IsActive = true;
-            tracker.CreatedDate = DateTime.UtcNow;
-            tracker.ModifiedDate = DateTime.UtcNow;
+            tracker.CreatedDate = DateTime.Now;
+            tracker.ModifiedDate = DateTime.Now;
             tracker.IsDeleted = false;
+            tracker.Remark = status.Comment;
 
             var previousTrackers = _context.Set<Tracker>()
                .Where(t => t.EnquiryId == tracker.EnquiryId)
@@ -49,6 +50,7 @@ namespace LeadTracker.Infrastructure.Repository
             {
 
                 previousTracker.IsStepCompleted = true;
+                previousTracker.ModifiedDate = DateTime.Now;
                 _context.Entry(previousTracker).State = EntityState.Modified;
             }
 
@@ -62,8 +64,8 @@ namespace LeadTracker.Infrastructure.Repository
             foreach (var entity in entities)
             {
                 entity.IsActive = true;
-                entity.CreatedDate = DateTime.UtcNow;
-                entity.ModifiedDate = DateTime.UtcNow;
+                entity.CreatedDate = DateTime.Now;
+                entity.ModifiedDate = DateTime.Now;
                 entity.IsDeleted = false;
 
 

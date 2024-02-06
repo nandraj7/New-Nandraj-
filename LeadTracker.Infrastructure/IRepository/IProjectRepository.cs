@@ -10,5 +10,6 @@ namespace LeadTracker.Infrastructure.IRepository
 {
     public interface IProjectRepository : IRepository<Project>
     {
+        Task RegisterNewProjectAsync(Project[] projects);
     }
 }

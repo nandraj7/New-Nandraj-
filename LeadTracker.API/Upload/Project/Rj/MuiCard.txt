@@ -1,0 +1,74 @@
+import * as React from 'react';
+import Card from '@mui/material/Card';
+//import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+//import Button from '@mui/material/Button';
+//import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+//import { useState, useEffect } from 'react'
+// import axios from 'axios';
+
+
+export default function MuiCard() {
+    // const url = 'https://api.jikan.moe/v4/top/anime';
+    // const [data, setData] = useState();
+    // useEffect(() => {
+
+    //     const getdata = () => {
+    //         axios.get(url)
+    //             .then(res => {
+    //                 console.log(res.data);
+    //                 setData(res.data);
+
+    //             })
+    //     }
+    //     getdata();
+
+    // }, [])
+
+
+
+    return (
+        <div>
+
+
+            <Container maxWidth="lg">
+               
+
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                flexWrap: 'wrap',
+                                p: 1,
+                                m: 1,
+                                bgcolor: 'background.paper',
+                                borderRadius: 1,
+                                margin: '2px'
+                            }}
+                            
+                        >
+
+                            <Card sx={{ maxWidth: 350 }}>
+                                <CardMedia
+                                    sx={{ height: 140 }}
+                                    image="/static/images/cards/contemplative-reptile.jpg"
+                                    title="green iguana"
+                                />
+                                <CardContent>
+                                    <h4>title</h4>
+
+                                </CardContent>
+
+                            </Card>
+
+                          </Box>
+                
+
+            </Container>
+        </div>
+    )
+
+}

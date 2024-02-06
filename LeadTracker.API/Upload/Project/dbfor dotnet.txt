@@ -1,0 +1,15 @@
+CREATE  DATABASE  UserDb;
+
+CREATE TABLE UserTable (
+    Id INT PRIMARY KEY,
+    Username NVARCHAR(255) ,
+    Name NVARCHAR(255) ,
+    Email NVARCHAR(255),
+    Phone NVARCHAR(20) ,
+    DateOfBirth DATE ,
+    IsActive BIT 
+);
+
+consume web api in .net mvc need two References
+1.System.Net.Http
+2.Microsoft.AspNet.WebApi.Client

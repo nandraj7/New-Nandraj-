@@ -12,28 +12,32 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.CodeDom;
 using System.Configuration;
+using System.IO;
 using System.Text;
-
-
 
 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
-//var config = GetConfiguration();
-
 var builder = WebApplication.CreateBuilder(args);
+
+var logger = new LoggerConfiguration()
+  .ReadFrom.Configuration(builder.Configuration)
+  .Enrich.FromLogContext()
+  .CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
+
 
 var configuration = BuildConfiguration();
 
 builder.Configuration.Bind(configuration);
 
 var _appSetting = new AppSetting();
-
-// Add services to the container.
-
 
 builder.Services.AddAuthentication(options =>
 {
@@ -57,13 +61,13 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen( c =>
-{
-    // ...
+builder.Services.AddSingleton<SchedulerTaskService>(); // Add Scheduler as a Singleton
+builder.Services.AddHostedService(provider => provider.GetRequiredService<SchedulerTaskService>());
 
-    // Add a security definition for JWT
+builder.Services.AddSingleton<SchedulerService>();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
@@ -74,11 +78,8 @@ builder.Services.AddSwaggerGen( c =>
         Scheme = "Bearer"
     });
 
-
-    //Add a global security requirement for JWT
-
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
-   {
+    {
         {
             new OpenApiSecurityScheme
             {
@@ -90,11 +91,8 @@ builder.Services.AddSwaggerGen( c =>
             },
             new string[] { }
         }
-   });
-}
-);
-
-
+    });
+});
 
 #region DBContext
 var connectionOptions = new ConnectionOptions();
@@ -104,10 +102,7 @@ builder.Configuration.GetSection("ConnectionOptions").Bind(_appSetting);
 builder.Services.AddDbContext<LeadTrackerContext>(options => options.UseSqlServer(_appSetting.DbConnection));
 #endregion
 
-
-
 #region Mapper, Repositories and Services
-
 builder.Services.AddAutoMapper(typeof(MappingProfile), typeof(MappingProfile));
 builder.Services.AddRepositories();
 builder.Services.AddServices();
@@ -125,13 +120,16 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Creating a scheduler service instance and starting it
+//var schedulerService = app.Services.GetRequiredService<SchedulerService>();
+//schedulerService.Start();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-//app.UseMiddleware<JwtMiddleware>();
+
 app.UseCors("AllowSpecificOrigin");
 app.UseHttpsRedirection();
 app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());

@@ -11,8 +11,9 @@ namespace LeadTracker.BusinessLayer.IService
     {
         Task CreateDocument(int userId, int orgId, DocumentDTO document);
 
-
+        Task<string> GetDocumentType(string documentPath);
 
         Task InsertStatus(StatusDTO status, int orgId, int userId);
+        Task<string> GetContentType(string documentPath);
     }
 }

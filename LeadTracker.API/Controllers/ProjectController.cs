@@ -17,17 +17,35 @@ namespace LeadTracker.API.Controllers
         {
             _projectService = projectService;
         }
-
         [HttpPost]
-        public async Task<ActionResult> SaveProject(ProjectDTO project)
+        public async Task<ActionResult> SaveProject([FromForm] ProjectDTO project)
         {
-            await _projectService.CreateProject(project).ConfigureAwait(false);
+            var userId = Convert.ToInt32(HttpContext.User.FindFirst(a => a.Type.Equals("EmployeeId")).Value);
+
+            await _projectService.CreateProject(project, userId).ConfigureAwait(false);
 
             return Ok(project);
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProject([FromForm] ProjectDTO project, int id)
+        {
+            var userId = Convert.ToInt32(HttpContext.User.FindFirst(a => a.Type.Equals("EmployeeId")).Value);
+
+            var updatedProject = await _projectService.UpdateProjectAsync(id, project, userId).ConfigureAwait(false);
+
+            return Ok(updatedProject);
+        }
+        //[HttpPost]
+        //public async Task<ActionResult> SaveProject(ProjectDTO project)
+        //{
+        //    await _projectService.CreateProject(project).ConfigureAwait(false);
+
+        //    return Ok(project);
+        //}
+
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProjectDTO>> GetProject(int id)
+        public async Task<ActionResult<NewProjectDTO>> GetProject(int id)
         {
             var project = await _projectService.GetProjectByIdAsync(id).ConfigureAwait(false);
 
@@ -40,23 +58,23 @@ namespace LeadTracker.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProjectDTO>>> GetAllProject()
+        public async Task<ActionResult<IEnumerable<NewProjectDTO>>> GetAllProject()
         {
             var project = await _projectService.GetAllProjectAsync().ConfigureAwait(false);
             return Ok(project);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProject(int id, ProjectDTO project)
-        {
-            if (id != project.ProjectId)
-            {
-                return BadRequest();
-            }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> UpdateProject(int id, ProjectDTO project)
+        //{
+        //    if (id != project.Id)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            await _projectService.UpdateProjectAsync(id, project).ConfigureAwait(false);
-            return NoContent();
-        }
+        //    await _projectService.UpdateProjectAsync(id, project).ConfigureAwait(false);
+        //    return NoContent();
+        //}
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProject(int id)

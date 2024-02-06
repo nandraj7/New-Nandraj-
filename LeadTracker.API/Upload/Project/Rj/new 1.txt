@@ -1,0 +1,43 @@
+1. element(section)->add image on canvas(if image is selected)
+   ->element(click) initial element ui is not open.
+   
+2. element -> add shape on canvas -> initialy got shadow filter
+    ->go to side bar buttons (all are working) but if we want 
+	shadow filter again we have no option in shapetoolbar.  
+	(shape show filter show only on initial shape selection).
+
+3. Text(section) ->	add text on canvas -->text section(click)
+   -> initial ui is not open if text is selected.
+
+4. element --> add shape(shape is selected)-> element(click)
+  -> initail ui is not opening.
+
+5. element - add line on canvas -> element (click)->
+  initial ui is not open (if line is selected).
+
+  
+1. in text section--> text added on canvas-> 
+text is selected -> 
+(until text phrases are loading we cant work with other filter)
+
+2.favorite assets and favorite tempalte onclick of carousel not added on canvas. 
+Mangesh sir today's status 
+
+Pragati -
+1. show active toolbar (show active from lsp also) - done
+2. show previous lsp with scroller value - in progress
+3. ellipse text - active - done
+4. handle lsp - done
+
+Vikas-
+
+1 - Test application
+2 - taken call with ahmet (2 hrs)
+3 - conflict resolving while deployment (in progress)
+
+swati-
+1. lsp - handle (test)-done
+2. on hover remove bg color from filter-done
+3. handle download popup close-done
+4. fill - give border -done
+5. add font style(upper/lower  in toolbar) in theme style- done

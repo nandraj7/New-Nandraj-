@@ -18,10 +18,14 @@ namespace LeadTracker.API.Extensions
 
             services.AddScoped<IOrgnisationService, OrganisationService>();
             services.AddScoped<IAddressService, AddressService>();
+            services.AddScoped<IAttendanceService, AttendanceService>();
             services.AddScoped<IBranchService, BranchService>();
             services.AddScoped<ICodeService, CodeService>();
+            services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IDocumentService, DocumentService>();
+            services.AddScoped<IEducationService, EducationService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IHolidayService, HolidayService>();
             services.AddScoped<IEmployeeRoleService, EmployeeRoleService>();
             services.AddScoped<IPermissionService, PermissionService>();
             services.AddScoped<IRolePermissionService, RolePermissionService>();
@@ -35,12 +39,15 @@ namespace LeadTracker.API.Extensions
             services.AddScoped<IProjectDetailService, ProjectDetailService>();
             services.AddScoped<ITrackerService, TrackerService>();
             services.AddScoped<IUserLocationService, UserLocationService>();
+            services.AddScoped<IVisitTrackingService, VisitTrackingService>();
             services.AddScoped<IWorkFlowService, WorkFlowService>();
             services.AddScoped<IWorkFlowStepService, WorkFlowStepService>();
             services.AddScoped<IZoneService, ZoneService>();
+            services.AddScoped<IDatabaseService, DatabaseService>();
+
 
 
         }
-        
+
     }
 }

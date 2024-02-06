@@ -20,11 +20,25 @@ namespace LeadTracker.BusinessLayer.Service
     {
         private readonly IDocumentRepository _documentrepository;
         private readonly ILogger<DocumentService> _logger;
+        private readonly IEmployeeRepository _employeerepository;
+        private readonly INotificationService _notificationService;
+        private readonly IWorkFlowStepRepository _workFlowStepRepository;
+        private readonly ILeadRepository _leadRepository;
+        private readonly IVisitTrackingRepository _visitTrackingRepository;
 
-        public DocumentService(IDocumentRepository documentRepository, ILogger<DocumentService> logger)
+
+        public DocumentService(IDocumentRepository documentRepository, ILogger<DocumentService> logger, IEmployeeRepository employeerepository, INotificationService notificationService, IWorkFlowStepRepository workFlowStepRepository, ILeadRepository leadRepository, IVisitTrackingRepository visitTrackingRepository
+)
         {
-            _documentrepository= documentRepository;
-            _logger= logger;
+            _documentrepository = documentRepository;
+            _logger = logger;
+            _employeerepository = employeerepository;
+            _notificationService = notificationService;
+            _workFlowStepRepository = workFlowStepRepository;
+            _leadRepository = leadRepository;
+            _visitTrackingRepository = visitTrackingRepository;
+
+
         }
 
         public async Task CreateDocument(int userId, int orgId, DocumentDTO document)
@@ -55,16 +69,18 @@ namespace LeadTracker.BusinessLayer.Service
 
         public async Task InsertStatus(StatusDTO status, int orgId, int userId)
         {
+            int assignedTo = status.NextWorkFlowStepId == 5 || status.NextWorkFlowStepId == 6 ? 3 : userId;
+
             if (status.Files != null && status.Files.Count > 0)
             {
-                var documents = new List<Document>(); 
+                var documents = new List<Document>();
 
                 foreach (var doc in status.Files)
                 {
                     var outputFile = await WriteFile(doc);
                     if (!string.IsNullOrEmpty(outputFile))
                     {
-                        
+
                         var document = new Document
                         {
                             EnquiryId = status.EnquiryId,
@@ -78,33 +94,108 @@ namespace LeadTracker.BusinessLayer.Service
                             UserId = userId
                         };
 
-                        documents.Add(document); 
+                        documents.Add(document);
                     }
                 }
 
-                
+
                 await _documentrepository.CreateAllAsync(documents).ConfigureAwait(false);
             }
 
-            
+
             var tracker = new Tracker
             {
                 EnquiryId = status.EnquiryId,
+                VisitExpectedDate = status.VisitExpectedDate,
                 CodeId = status.ModuleType,
-                Remark = status.Comment,
+                //Remark = status.Comment,
                 Date = DateTime.UtcNow,
                 VisitExpected = null,
-                VisitExpectedDate = null,
-                VisitedProjectId = null,
+                VisitedProjectId = status.VisitedProjectId,
                 VisitRemark = null,
-                AssignedTo = userId,
+                AssignedTo = assignedTo,
                 WorkFlowId = status.WorkFlowId,
                 WorkFlowStepId = status.NextWorkFlowStepId,
                 IsStepCompleted = false,
-                OrgId = orgId
+                OrgId = orgId,
+                PriorityStatus = status.PriorityStatus,
+                Requirement = status.Requirement,
+                Budget = status.Budget,
+                Purpose = status.Purpose,
+                CompanyPercentage = status.CompanyPercentage,
+                EmployeePercentage = status.EmployeePercentage,
+                RegistrationValue = status.RegistrationValue,
+                TotalIncentive = status.TotalIncentive,
+                TDS = status.TDS
             };
 
-            await _documentrepository.CreateTracker(tracker);
+
+            var existingLead = await _leadRepository.GetByIdAsync(status.EnquiryId ?? 0);
+
+            if (existingLead != null)
+            {
+                existingLead.Name = status.Name;
+                existingLead.FinalRemark = status.Comment;
+                existingLead.Requirement = status.Requirement;
+                existingLead.Budget = status.Budget;
+                existingLead.TrackerFlowStepId = status.NextWorkFlowStepId;
+                existingLead.AssignedTo = assignedTo;
+                existingLead.ModifiedDate = DateTime.UtcNow;
+                existingLead.ModifiedBy = userId;
+                existingLead.Purpose = status.Purpose;
+
+                await _leadRepository.UpdateAsync(existingLead);
+
+            }
+            var visitTracking = new VisitTracking
+            {
+                //StartDateTime = DateTime.Now,
+                WorkFlowStepId = status.CurrentWorkFlowStepId,
+                UserId = userId,
+                EnquiryId = status.EnquiryId,
+                ProjectId = status.VisitedProjectId,
+                CreatedBy = userId,
+                ModifiedBy = userId,
+                VisitStatus = "Pending",
+                Status = true
+            };
+            await _visitTrackingRepository.CreateVisitTracking(visitTracking);
+
+
+            if (tracker.WorkFlowStepId == 4)
+            {
+                //var parentName = await _employeerepository.GetEmployeeNameByIdAsync(userId);
+                var assignedToName = await _employeerepository.GetEmployeeNameByIdAsync(tracker.AssignedTo ?? 0);
+
+                string ModuleName = "Work flow";
+
+                //string text = $"Hello, {assignedToName} have a Booking!!!";
+
+                await _notificationService.NotificationForBookingAsync(ModuleName, userId, assignedToName);
+
+
+            }
+
+            if (tracker.WorkFlowStepId == 5 || tracker.WorkFlowStepId == 6)
+            {
+                string moduleName = "Rejected";
+                var hrName = await _employeerepository.GetEmployeeNameByIdAsync(3);
+                var userName = await _employeerepository.GetEmployeeNameByIdAsync(userId);
+
+
+
+                var currentStepName = await _workFlowStepRepository.GetWorkFlowStepNameById(status.CurrentWorkFlowStepId ?? 0);
+                var NextStepName = await _workFlowStepRepository.GetWorkFlowStepNameById(status.NextWorkFlowStepId ?? 0);
+
+
+                string textForHR = $"Hello {hrName}, {userName} had a {currentStepName} and now Added in {NextStepName}";
+
+                await _notificationService.CreateNotificationForUser(3, textForHR, moduleName, userId);
+
+            }
+
+
+            await _documentrepository.CreateTracker(tracker, status);
 
             if (status.Files != null)
             {
@@ -114,9 +205,6 @@ namespace LeadTracker.BusinessLayer.Service
                 }
             }
         }
-
-
-
 
         public async Task<string> WriteFile(IFormFile file)
         {
@@ -133,7 +221,7 @@ namespace LeadTracker.BusinessLayer.Service
                     Directory.CreateDirectory(filepath);
                 }
 
-                var outputFile = Path.Combine("Upload\\Files", filename);
+                var outputFile = Path.Combine("Upload\\Files\\" + file.FileName);
                 var exactpath = Path.Combine(Directory.GetCurrentDirectory(), outputFile);
                 using (var stream = new FileStream(exactpath, FileMode.Create))
                 {
@@ -146,36 +234,52 @@ namespace LeadTracker.BusinessLayer.Service
                 return null;
             }
         }
+        public async Task<string> GetDocumentType(string documentPath)
+        {
+            string extension = Path.GetExtension(documentPath)?.ToLowerInvariant();
 
+            switch (extension)
+            {
+                case ".jpg":
+                case ".jpeg":
+                case ".png":
+                case ".svg":
+                case ".svg+xml":
+                    return "Image";
+                case ".pdf":
+                    return "PDF";
+                case ".xlsx":
+                case ".xls":
+                    return "Excel";
+                default:
+                    return "Unknown";
+            }
+        }
+        public async Task<string> GetContentType(string documentPath)
+        {
+            switch (Path.GetExtension(documentPath).ToLower())
+            {
+                case ".jpg":
+                case ".jpeg":
+                    return "image/jpeg";
+                case ".png":
+                    return "image/png";
+                case ".gif":
+                    return "image/gif";
 
-        //public async Task<string> WriteFile(IFormFile file)
-        //{
+                case ".pdf":
+                    return "application/pdf";
+                case ".doc":
+                case ".docx":
+                    return "application/msword";
+                case ".xls":
+                case ".xlsx":
+                    return "application/vnd.ms-excel";
 
-        //    string filename = "";
-        //    try
-        //    {
-        //        var extension = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
-        //        filename = DateTime.Now.Ticks.ToString() + extension;
+                default:
+                    return "application/octet-stream";
+            }
+        }
 
-        //        var filepath = Path.Combine(Directory.GetCurrentDirectory(), "Upload\\Files");
-
-        //        if (!Directory.Exists(filepath))
-        //        {
-        //            Directory.CreateDirectory(filepath);
-        //        }
-
-        //        var outputFile = "Upload\\Files\\" + filename;
-        //        var exactpath = Path.Combine(Directory.GetCurrentDirectory(), outputFile);
-        //        using (var stream = new FileStream(exactpath, FileMode.Create))
-        //        {
-        //            await file.CopyToAsync(stream);
-        //        }
-        //        return outputFile;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return null;
-        //    }
-        //}
     }
 }

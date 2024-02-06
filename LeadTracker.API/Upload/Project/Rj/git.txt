@@ -1,0 +1,21 @@
+git checkout develop -- deploy 
+
+git pull origin develop/staging/prod/realsed
+
+git checkout -b CTFMP-2583_UPDATE --develop 
+
+develop navachya branch pasun new branch create kartoy 
+
+STAGE --> git add. hi command run karynachi graj nhi
+
+git commit -m "code changes add one line for login purpose"
+
+git push --set-upstream origin CTFMP-2583_UPDATE
+
+suppose we our branch is not use full or bymistake push wrong changes
+
+delete git branch 
+
+ git branch -D CTFMP-2583_UPDATE  
+ 
+ 

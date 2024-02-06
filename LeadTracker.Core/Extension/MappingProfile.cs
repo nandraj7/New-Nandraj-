@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using LeadTracker.API;
+using LeadTracker.API.Entities;
+using LeadTracker.API.LeadTracker.API.SQL;
 using LeadTracker.Core.DTO;
 using LeadTracker.Core.Entities;
 using System;
@@ -20,7 +22,17 @@ namespace LeadTracker.Core.Extension
 
             CreateMap<AddressDTO, Address>().ReverseMap();
 
+            CreateMap<Attendance2DTO, Attendance>().ReverseMap();
+
+            CreateMap<AttendanceDTO, Attendance>().ReverseMap();
+
             CreateMap<BranchDTO, Branch>().ReverseMap();
+            CreateMap<EducationDTO, Education>().ReverseMap();
+            CreateMap<NewEducationDTO, Education>().ReverseMap();
+            CreateMap<BranchDTO, Branch>().ReverseMap();
+            CreateMap<BankDetailDTO, BankDetail>().ReverseMap();
+            CreateMap<NewBankDetailDTO, BankDetail>().ReverseMap();
+            CreateMap<HolidayDTO, Holiday>().ReverseMap();
 
             CreateMap<CodeDTO, Code>().ReverseMap();
 
@@ -36,15 +48,31 @@ namespace LeadTracker.Core.Extension
 
             CreateMap<BookingDTO, Booking>().ReverseMap();
 
+            CreateMap<NotificationDTO, Notification>().ReverseMap();
+
+            CreateMap<NewNotificationDTO, Notification>().ReverseMap();
+
+            CreateMap<UpdateNotificationDTO, Notification>().ReverseMap();
+
+            CreateMap<SendNotificationDTO, Notification>().ReverseMap();
+
             CreateMap<LeadDTO, Lead>().ReverseMap();
+
+            CreateMap<LeadSourceGetDTO, LeadSource>().ReverseMap();
 
             CreateMap<LocationDTO, Location>().ReverseMap();
 
             CreateMap<ProjectDTO, Project>().ReverseMap();
 
+            CreateMap<NewProjectDTO, Project>().ReverseMap();
+
             CreateMap<ProjectDetailDTO, ProjectDetail>().ReverseMap();
 
             CreateMap<TrackerDTO, Tracker>().ReverseMap();
+
+            CreateMap<VisitStatusDTO, VisitTracking>().ReverseMap();
+
+            CreateMap<VisitTrackingDTO, VisitTracking>().ReverseMap();
 
             CreateMap<UserLocationDTO, UserLocation>().ReverseMap();
 
@@ -57,6 +85,8 @@ namespace LeadTracker.Core.Extension
             //CreateMap<WorkFlowStepDTO, WorkFlowStep>().ForMember(src => src.Id, opts => opts.MapFrom(dest => dest.WorkFlowStepId)).ReverseMap();
 
             CreateMap<WorkFlowStepDTO, WorkFlowStep>().ReverseMap();
+
+            CreateMap<AttendanceApprovalDTO, AttendanceApproval>().ReverseMap();
 
 
 

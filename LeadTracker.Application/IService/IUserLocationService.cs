@@ -12,8 +12,11 @@ namespace LeadTracker.BusinessLayer.IService
     {
         Task<UserLocationDTO> UpdateOrCreateUserLocation(UserLocationDTO userLocation, int userId, int orgId);
 
-        Task<IEnumerable<UserLocationResponseDTO>> GetAllUserLocationAsync(int orgId);
+        Task<IEnumerable<UserLocationResponseDTO>> GetAllUserLocationAsync(int orgId, int userId);
 
-        
+        Task<IEnumerable<RoutePathResponseDTO>> GetUserPathAsync(RoutePathRequestDTO pathRequest);
+
+
+
     }
 }
