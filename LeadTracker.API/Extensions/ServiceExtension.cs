@@ -19,7 +19,7 @@ namespace LeadTracker.API.Extensions
             services.AddScoped<IOrgnisationService, OrganisationService>();
             services.AddScoped<IAddressService, AddressService>();
             services.AddScoped<IAttendanceService, AttendanceService>();
-            services.AddScoped<IBranchService, BranchService>();
+            services.AddScoped<IBranchService, BranchService>(); 
             services.AddScoped<ICodeService, CodeService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IDocumentService, DocumentService>();

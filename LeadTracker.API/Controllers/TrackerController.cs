@@ -45,7 +45,7 @@ namespace LeadTracker.API.Controllers
         public async Task<ActionResult<IEnumerable<TrackerDTO>>> GetAllTracker()
         {
             var tracker = await _trackerService.GetAllTrackerAsync().ConfigureAwait(false);
-            return Ok(tracker);
+            return Ok(tracker); 
         }
 
 

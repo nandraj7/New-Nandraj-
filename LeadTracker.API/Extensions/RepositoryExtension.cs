@@ -19,7 +19,7 @@ namespace LeadTracker.API.Extensions
 
             services.AddScoped<IDocumentRepository, DocumentRepository>();
 
-            services.AddScoped<IEducationRepository, EducationRepository>();
+            services.AddScoped<IEducationRepository, EducationRepository>(); 
 
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 

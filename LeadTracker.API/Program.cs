@@ -21,6 +21,7 @@ using System.Configuration;
 using System.IO;
 using System.Text;
 
+
 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
 var builder = WebApplication.CreateBuilder(args);

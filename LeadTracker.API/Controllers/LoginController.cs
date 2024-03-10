@@ -41,7 +41,6 @@ namespace LeadTracker.API.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-
         public async Task<ActionResult> Post(LoginDTO loginDetails)
         {
             if (loginDetails != null && loginDetails.Mobile != null && loginDetails.DeviceId != null

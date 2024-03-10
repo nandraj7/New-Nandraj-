@@ -64,7 +64,7 @@ namespace LeadTracker.API.Controllers
 
         [HttpGet("{visitTrackingId}")]
         public async Task<ActionResult<VisitTrackingDTO>> GetVisitTracking(int visitTrackingId)
-        {
+        { 
             var visit = await _visitTrackingService.GetVisitTrackingByIdAsync(visitTrackingId).ConfigureAwait(false);
             if (visit == null)
             {

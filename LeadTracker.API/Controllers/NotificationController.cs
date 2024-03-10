@@ -16,7 +16,6 @@ namespace LeadTracker.API.Controllers
         }
 
 
-
         [HttpPost("NewNotification")]
         public async Task<ActionResult> SaveProject(NotificationDTO notification)
         {

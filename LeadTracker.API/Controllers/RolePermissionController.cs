@@ -18,7 +18,7 @@ namespace LeadTracker.API.Controllers
         {
             _rolePermissionService = rolePermissionService;
         }
-
+         
         [HttpPost]
         public async Task<ActionResult> SaveRolePermission(RolePermissionDTO rolePermission)
         {

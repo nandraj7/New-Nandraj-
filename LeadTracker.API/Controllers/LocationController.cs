@@ -15,7 +15,7 @@ namespace LeadTracker.API.Controllers
 
         public LocationController(ILocationService locationService)
         {
-            _locationService = locationService;
+            _locationService = locationService; 
         }
 
         [HttpPost]

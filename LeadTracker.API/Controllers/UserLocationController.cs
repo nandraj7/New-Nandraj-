@@ -22,7 +22,7 @@ namespace LeadTracker.API.Controllers
         }
 
         [HttpPost("UpdateOrCreateUserLocation")]
-        public async Task<IActionResult> UpdateOrCreateUserLocation(UserLocationDTO userLocation)
+        public async Task<IActionResult> UpdateOrCreateUserLocation(UserLocationDTO userLocation) 
         {
             var userId = Convert.ToInt32(HttpContext.User.FindFirst(a => a.Type.Equals("EmployeeId")).Value);
             var orgId = Convert.ToInt32(HttpContext.User.FindFirst(a => a.Type.Equals("OrgId")).Value);

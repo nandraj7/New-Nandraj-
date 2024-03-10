@@ -17,7 +17,7 @@ namespace LeadTracker.API.Controllers
         public LeadSourceController(ILeadSourceService leadSourceService, ILeadRepository leadRepository)
         {
             _leadSourceService = leadSourceService;
-            _leadRepository = leadRepository;
+            _leadRepository = leadRepository; 
 
         }
 

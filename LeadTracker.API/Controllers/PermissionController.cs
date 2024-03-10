@@ -20,7 +20,6 @@ namespace LeadTracker.API.Controllers
 
         }
 
-
         [HttpPost]
         public async Task<ActionResult> SavePermission(PermissionDTO permission)
         {

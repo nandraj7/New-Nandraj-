@@ -12,7 +12,7 @@ namespace LeadTracker.API.Controllers
     public class AttendanceController : BaseController
     {
         private readonly IAttendanceService _attendanceService;
-        public AttendanceController(IAttendanceService attendanceService)
+        public AttendanceController(IAttendanceService attendanceService) 
         {
             _attendanceService = attendanceService;
         }

@@ -15,7 +15,6 @@ namespace LeadTracker.API.Controllers
         {
             _holidayService = holidayService;
 
-
         }
 
         [HttpPost("CreateHoliday")]

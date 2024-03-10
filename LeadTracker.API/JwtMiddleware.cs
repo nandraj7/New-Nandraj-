@@ -23,6 +23,7 @@ using Microsoft.IdentityModel.Tokens;
 //        _configuration = configuration;
 //    }
 
+
 //    public async Task Invoke(HttpContext context)
 //    {
 //        var endpoint = context.Features.Get<IEndpointFeature>()?.Endpoint;

@@ -38,6 +38,7 @@ namespace LeadTracker.API.Controllers
 
             return Ok(lead);
         }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LeadDTO>>> GetAllLead()
         {
