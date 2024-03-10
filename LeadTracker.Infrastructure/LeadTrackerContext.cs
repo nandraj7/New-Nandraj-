@@ -626,7 +626,7 @@ public partial class LeadTrackerContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__Lead__0A019B7DE448629C");
 
 
-            entity.ToTable("Lead");
+            entity.ToTable("Lead"); 
 
             entity.Property(e => e.Budget).HasMaxLength(250);
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");

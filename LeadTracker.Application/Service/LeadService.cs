@@ -77,7 +77,7 @@ namespace LeadTracker.BusinessLayer.Service
         //    var result = new List<EnquiryDTO>();
 
         //    foreach (var lead in leads)
-        //    {
+        //    { 
         //        var enquiryId = lead.Id;
         //        var trackerGroup = trackerGroups.FirstOrDefault(group => group.Key == enquiryId);
 
